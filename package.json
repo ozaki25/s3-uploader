@@ -2,5 +2,9 @@
   "name": "serverless_node",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "serverless-http": "^1.9.0"
+  }
 }
