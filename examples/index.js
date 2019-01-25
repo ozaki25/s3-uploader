@@ -20,10 +20,9 @@ class XUploader extends HTMLElement {
   putFile = ({ url, file, type }) =>
     fetch(url, { method: 'PUT', headers: { 'Content-Type': type }, body: file });
 
-  appendImage = url => {
-    const img = document.createElement('img');
-    img.setAttribute('src', url);
-    this.shadowRoot.appendChild(img);
+  dispatch = ({ url, name }) => {
+    const event = new CustomEvent('uploaded', { detail: { url, name } });
+    window.dispatchEvent(event);
   };
 
   onClick = async e => {
@@ -41,8 +40,7 @@ class XUploader extends HTMLElement {
       const { url, bucket } = await getUploadUrlResponse.json();
       const putFileResponse = await this.putFile({ url, file, type });
       if (putFileResponse.ok) {
-        console.log(`https://s3-ap-northeast-1.amazonaws.com/${bucket}/${name}`);
-        this.appendImage(`https://s3-ap-northeast-1.amazonaws.com/${bucket}/${name}`);
+        this.dispatch({ url: `https://s3-ap-northeast-1.amazonaws.com/${bucket}/${name}`, name });
       } else {
         console.log(putFileResponse);
       }

@@ -1,2 +1,17 @@
 <x-uploader></x-uploader>
 <script src="index.js"></script>
+<script>
+  window.addEventListener('uploaded', function(e) {
+    const {
+      detail: { url, name },
+    } = e;
+    console.log({ url, name });
+    const p = document.createElement('p');
+    const link = document.createElement('a');
+    const text = document.createTextNode(name);
+    link.setAttribute('href', url);
+    link.appendChild(text);
+    p.appendChild(link);
+    document.body.appendChild(p);
+  });
+</script>
