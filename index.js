@@ -8,8 +8,6 @@ const roleId = process.env.ROLE_ID;
 const roleName = process.env.ROLE_NAME;
 const Bucket = process.env.BUCKET;
 
-const app = express();
-
 const stsParams = {
   RoleArn: `arn:aws:iam::${roleId}:role/${roleName}`,
   RoleSessionName: `session_${roleName}`,
@@ -24,6 +22,14 @@ const s3Params = ({ Key, ContentType }) => ({
 const sts = new aws.STS({
   accessKeyId,
   secretAccessKey,
+});
+
+const app = express();
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
 });
 
 app.get('/', (req, res) => {
@@ -45,7 +51,7 @@ app.get('/', (req, res) => {
       sessionToken: SessionToken,
     });
     const url = s3.getSignedUrl('putObject', s3Params({ Key: filename, ContentType: mimetype }));
-    res.send({ url });
+    res.send({ url, bucket: Bucket });
   });
 });
 
