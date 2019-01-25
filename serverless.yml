@@ -1,10 +1,11 @@
-service: my-express-application
+service: ippo-s3-upload-helper
 
 provider:
   name: aws
   runtime: nodejs8.10
   region: ap-northeast-1
   stage: dev
+  profile: hack
 
 functions:
   app:
