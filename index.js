@@ -17,6 +17,7 @@ const s3Params = ({ Key, ContentType }) => ({
   Bucket,
   Key,
   ContentType,
+  Conditions: [['content-length-range', 0, 10000000], { acl: 'public-read-write' }],
 });
 
 const sts = new aws.STS({
